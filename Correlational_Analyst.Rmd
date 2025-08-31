@@ -15,12 +15,49 @@ The focus is on exploring relationships between different air pollutants and tes
 
 
 ```{r}
-
+install.packages("GGally")
+install.packages("corrplot")
 ```
 
 
+```{r}
+# Load all required libraries
+library(tidyverse)  # For data manipulation and visualization
+library(corrplot)   # For correlation matrices
+library(GGally)     # For correlation plots like ggpairs
+library(readxl)     # read excel files
+```
 
 
+```{r}
+air_data <- read_excel("who_ambient_air_quality_database_version_2024_(v6.1).xlsx", sheet = "Update 2024 (V6.1) (2)")
+```
+
+
+```{r}
+view(air_data)
+```
+
+```{r}
+str(air_data)
+```
+
+
+```{r}
+colSums(is.na(air_data))
+```
+```{r}
+# replace "NA" strings with real NA in the entire dataset
+air_data[air_data == "NA"] <- NA   
+```
+
+```{r}
+colSums(is.na(air_data))
+```
+
+```{r}
+
+```
 
 
 
