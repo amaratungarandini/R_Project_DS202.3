@@ -1,0 +1,32 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+
+# DS202.3 – Data Programming with R
+## Coursework – Scenario C: Correlational Analyst
+
+This R Notebook contains the data preparation, analysis, and visualizations for Correlational Analyst .  
+The focus is on exploring relationships between different air pollutants and testing whether one pollutant can reliably predict another.
+
+
+
+```{r}
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
