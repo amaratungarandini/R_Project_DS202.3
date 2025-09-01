@@ -116,7 +116,7 @@ view(air_data)
 ```
 
 
-
+Stage 2. Exploratory Data Analysis (EDA)
 ```{r}
 glimpse(air_data)
 ```
@@ -130,11 +130,98 @@ summary(air_data)
 
 
 ```{r}
-# Summary statistics for key pollutants
+# Summary statistics for key pollutants(understand the basic range, center, and spread of pollutants.)
 
 summary(air_data %>% 
           select(pm10_concentration, pm25_concentration, no2_concentration))
 ```
+
+```{r}
+# Create a scatter plot to visualize the relationship between PM2.5 and PM10 concentrations.(EDA)
+# Blue points represent individual observations, while the red line shows the linear regression fit.
+# This helps assess whether PM2.5 can be used to predict PM10 levels.
+
+ggplot(air_data, aes(x = pm25_concentration, y = pm10_concentration)) +
+  geom_point(color = "blue") +
+  geom_smooth(method = "lm", color = "red") +
+  labs(title = "PM2.5 vs PM10", x = "PM2.5", y = "PM10")
+```
+
+
+```{r}
+#Allows display multiple plots together
+library(patchwork)
+
+# Create individual plots(for see the shape, skewness, and outliers)
+p1 <- ggplot(air_data, mapping = aes(x = pm25_concentration)) +
+  geom_histogram(binwidth = 40, fill = "steelblue", color = "black") +
+  labs(title = "Distribution of PM25")
+
+p2 <- ggplot(air_data, mapping = aes(x = pm10_concentration)) +
+  geom_histogram(binwidth = 40, fill = "steelblue", color = "black") +
+  labs(title = "Distribution of PM10")
+
+p3 <- ggplot(air_data, mapping = aes(x = no2_concentration)) +
+  geom_histogram(binwidth = 30, fill = "steelblue", color = "black") +
+  labs(title = "Distribution of NO2")
+
+# Combine plots in one output
+p1 | p2 | p3   # stacks vertically
+
+```
+
+
+
+```{r}
+# Boxplots for all pollutants
+
+air_data %>%
+  pivot_longer(cols = c(pm10_concentration, pm25_concentration, no2_concentration),
+               names_to = "pollutant", values_to = "value") %>%
+  ggplot(aes(x = pollutant, y = value, fill = pollutant)) +
+  geom_boxplot()
+
+
+```
+
+
+
+```{r}
+#visually check correlations before formal correlation analysis.
+#GGally::ggpairs() for pollutant scatterplot matrix.
+
+ggpairs(air_data %>% select(pm10_concentration, pm25_concentration, no2_concentration))
+```
+
+
+```{r}
+# Check top 10 PM2.5 values
+#detect extreme values that may distort correlations.
+air_data %>% arrange(desc(pm25_concentration))
+```
+
+
+
+```{r}
+air_data %>% arrange(desc(no2_concentration))
+```
+
+
+
+```{r}
+air_data %>% arrange(desc(pm10_concentration))
+```
+
+
+
+
+
+
+
+
+
+
+
 
 
 
