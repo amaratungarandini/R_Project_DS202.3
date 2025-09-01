@@ -1763,6 +1763,7 @@ beneath the code.</p>
 visualizations for Correlational Analyst .<br />
 The focus is on exploring relationships between different air pollutants
 and testing whether one pollutant can reliably predict another.</p>
+<p>Stage 1. Data Preparation</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
 <!-- rnb-output-begin eyJkYXRhIjoiXG48IS0tIHJuYi1zb3VyY2UtYmVnaW4gZXlKa1lYUmhJam9pWUdCZ2NseHVhVzV6ZEdGc2JDNXdZV05yWVdkbGN5aGNJa2RIWVd4c2VWd2lLVnh1YVc1emRHRnNiQzV3WVdOcllXZGxjeWhjSW1OdmNuSndiRzkwWENJcFhHNWdZR0FpZlE9PSAtLT5cblxuYGBgclxuaW5zdGFsbC5wYWNrYWdlcyhcIkdHYWxseVwiKVxuaW5zdGFsbC5wYWNrYWdlcyhcImNvcnJwbG90XCIpXG5gYGBcblxuPCEtLSBybmItc291cmNlLWVuZCAtLT5cbiJ9 -->
@@ -1802,29 +1803,6 @@ library(readxl)     # read excel files</code></pre>
 <pre class="r"><code>str(air_data)</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-output-end -->
-<!-- rnb-output-begin eyJkYXRhIjoidGliYmxlIFs0MCwwOTggw5cgMjBdIChTMzogdGJsX2RmL3RibC9kYXRhLmZyYW1lKVxuICQgd2hvX3JlZ2lvbiAgICAgICAgOiBjaHIgWzE6NDAwOThdIFwiNF9FdXJcIiBcIjRfRXVyXCIgXCI0X0V1clwiIFwiNF9FdXJcIiAuLi5cbiAkIGlzbzMgICAgICAgICAgICAgIDogY2hyIFsxOjQwMDk4XSBcIkVTUFwiIFwiRVNQXCIgXCJFU1BcIiBcIkVTUFwiIC4uLlxuICQgY291bnRyeV9uYW1lICAgICAgOiBjaHIgWzE6NDAwOThdIFwiU3BhaW5cIiBcIlNwYWluXCIgXCJTcGFpblwiIFwiU3BhaW5cIiAuLi5cbiAkIGNpdHkgICAgICAgICAgICAgIDogY2hyIFsxOjQwMDk4XSBcIkEgQ29ydW5hL0VTUFwiIFwiQSBDb3J1bmEvRVNQXCIgXCJBIENvcnVuYS9FU1BcIiBcIkEgQ29ydW5hL0VTUFwiIC4uLlxuICQgeWVhciAgICAgICAgICAgICAgOiBudW0gWzE6NDAwOThdIDIwMTMgMjAxNCAyMDE1IDIwMTYgMjAxNyAuLi5cbiAkIHZlcnNpb24gICAgICAgICAgIDogY2hyIFsxOjQwMDk4XSBcIlY0LjAgKDIwMTgpLCBWNC4wICgyMDE4KSwgVjQuMCAoMjAxOCksIFY0LjAgKDIwMTgpLCBWNC4wICgyMDE4KSwgVjQuMCAoMjAxOCksIFY0LjAgKDIwMTgpXCIgXCJWNi4wICAoMjAyMyksIFY2LjAgICgyMDIzKSwgVjYuMCAgKDIwMjMpXCIgXCJWNi4wICAoMjAyMyksIFY2LjAgICgyMDIzKSwgVjYuMCAgKDIwMjMpLCBWNi4wICAoMjAyMylcIiBcIlY2LjAgICgyMDIzKSwgVjYuMCAgKDIwMjMpLCBWNi4wICAoMjAyMyksIFY2LjAgICgyMDIzKVwiIC4uLlxuICQgcG0xMF9jb25jZW50cmF0aW9uOiBudW0gWzE6NDAwOThdIDIzLjIgMjcuNSAyNS41IDIzLjEgMjYuOCAuLi5cbiAkIHBtMjVfY29uY2VudHJhdGlvbjogbnVtIFsxOjQwMDk4XSAxMS41IDE1LjkgMTQgMTMuMiAxNC4xIC4uLlxuICQgbm8yX2NvbmNlbnRyYXRpb24gOiBudW0gWzE6NDAwOThdIDI4LjggMTkuNiAyMi43IDIwLjIgMjEuNSAuLi5cbiAkIHBtMTBfdGVtcGNvdiAgICAgIDogY2hyIFsxOjQwMDk4XSBcIjg3XCIgXCI5NlwiIFwiOThcIiBcIjk4XCIgLi4uXG4gJCBwbTI1X3RlbXBjb3YgICAgICA6IGNociBbMTo0MDA5OF0gXCI0NlwiIFwiODhcIiBcIjcxXCIgXCI5OFwiIC4uLlxuICQgbm8yX3RlbXBjb3YgICAgICAgOiBjaHIgWzE6NDAwOThdIFwiOTNcIiBcIjk1XCIgXCI5OFwiIFwiOThcIiAuLi5cbiAkIHR5cGVfb2Zfc3RhdGlvbnMgIDogY2hyIFsxOjQwMDk4XSBcIlVyYmFuLCBVcmJhbiwgU3VidXJiYW5cIiBcIlVyYmFuLCBVcmJhbiwgU3VidXJiYW5cIiBcIlVyYmFuLCBVcmJhbiwgU3VidXJiYW4sIFN1YnVyYmFuXCIgXCJVcmJhbiwgVXJiYW4sIFN1YnVyYmFuLCBTdWJ1cmJhblwiIC4uLlxuICQgcmVmZXJlbmNlICAgICAgICAgOiBjaHIgWzE6NDAwOThdIFwiTkFcIiBcIk5BXCIgXCJOQVwiIFwiTkFcIiAuLi5cbiAkIHdlYl9saW5rICAgICAgICAgIDogY2hyIFsxOjQwMDk4XSBcIk5BXCIgXCJOQVwiIFwiTkFcIiBcIk5BXCIgLi4uXG4gJCBwb3B1bGF0aW9uICAgICAgICA6IG51bSBbMTo0MDA5OF0gMjQ2MTQ2IDI0NzYwNCAyNDc2MDQgMjQ3NjA0IDI0NzYwNCAuLi5cbiAkIHBvcHVsYXRpb25fc291cmNlIDogY2hyIFsxOjQwMDk4XSBcIm1hbnVhbCwgbWFudWFsLCBtYW51YWwsIG1hbnVhbFwiIFwiTkFcIiBcIk5BXCIgXCJOQVwiIC4uLlxuICQgbGF0aXR1ZGUgICAgICAgICAgOiBudW0gWzE6NDAwOThdIDQzLjQgNDMuNCA0My40IDQzLjQgNDMuNCAuLi5cbiAkIGxvbmdpdHVkZSAgICAgICAgIDogbnVtIFsxOjQwMDk4XSAtOC40MiAtOC40MiAtOC40MiAtOC40MiAtOC40MiAuLi5cbiAkIHdob19tcyAgICAgICAgICAgIDogbnVtIFsxOjQwMDk4XSAxIDEgMSAxIDEgMSAxIDEgMSAxIC4uLlxuIn0= -->
-<pre><code>tibble [40,098 × 20] (S3: tbl_df/tbl/data.frame)
- $ who_region        : chr [1:40098] &quot;4_Eur&quot; &quot;4_Eur&quot; &quot;4_Eur&quot; &quot;4_Eur&quot; ...
- $ iso3              : chr [1:40098] &quot;ESP&quot; &quot;ESP&quot; &quot;ESP&quot; &quot;ESP&quot; ...
- $ country_name      : chr [1:40098] &quot;Spain&quot; &quot;Spain&quot; &quot;Spain&quot; &quot;Spain&quot; ...
- $ city              : chr [1:40098] &quot;A Coruna/ESP&quot; &quot;A Coruna/ESP&quot; &quot;A Coruna/ESP&quot; &quot;A Coruna/ESP&quot; ...
- $ year              : num [1:40098] 2013 2014 2015 2016 2017 ...
- $ version           : chr [1:40098] &quot;V4.0 (2018), V4.0 (2018), V4.0 (2018), V4.0 (2018), V4.0 (2018), V4.0 (2018), V4.0 (2018)&quot; &quot;V6.0  (2023), V6.0  (2023), V6.0  (2023)&quot; &quot;V6.0  (2023), V6.0  (2023), V6.0  (2023), V6.0  (2023)&quot; &quot;V6.0  (2023), V6.0  (2023), V6.0  (2023), V6.0  (2023)&quot; ...
- $ pm10_concentration: num [1:40098] 23.2 27.5 25.5 23.1 26.8 ...
- $ pm25_concentration: num [1:40098] 11.5 15.9 14 13.2 14.1 ...
- $ no2_concentration : num [1:40098] 28.8 19.6 22.7 20.2 21.5 ...
- $ pm10_tempcov      : chr [1:40098] &quot;87&quot; &quot;96&quot; &quot;98&quot; &quot;98&quot; ...
- $ pm25_tempcov      : chr [1:40098] &quot;46&quot; &quot;88&quot; &quot;71&quot; &quot;98&quot; ...
- $ no2_tempcov       : chr [1:40098] &quot;93&quot; &quot;95&quot; &quot;98&quot; &quot;98&quot; ...
- $ type_of_stations  : chr [1:40098] &quot;Urban, Urban, Suburban&quot; &quot;Urban, Urban, Suburban&quot; &quot;Urban, Urban, Suburban, Suburban&quot; &quot;Urban, Urban, Suburban, Suburban&quot; ...
- $ reference         : chr [1:40098] &quot;NA&quot; &quot;NA&quot; &quot;NA&quot; &quot;NA&quot; ...
- $ web_link          : chr [1:40098] &quot;NA&quot; &quot;NA&quot; &quot;NA&quot; &quot;NA&quot; ...
- $ population        : num [1:40098] 246146 247604 247604 247604 247604 ...
- $ population_source : chr [1:40098] &quot;manual, manual, manual, manual&quot; &quot;NA&quot; &quot;NA&quot; &quot;NA&quot; ...
- $ latitude          : num [1:40098] 43.4 43.4 43.4 43.4 43.4 ...
- $ longitude         : num [1:40098] -8.42 -8.42 -8.42 -8.42 -8.42 ...
- $ who_ms            : num [1:40098] 1 1 1 1 1 1 1 1 1 1 ...</code></pre>
-<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
@@ -1833,16 +1811,6 @@ library(readxl)     # read excel files</code></pre>
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY29sU3Vtcyhpcy5uYShhaXJfZGF0YSkpXG5gYGAifQ== -->
 <pre class="r"><code>colSums(is.na(air_data))</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiICAgICAgICB3aG9fcmVnaW9uICAgICAgICAgICAgICAgaXNvMyAgICAgICBjb3VudHJ5X25hbWUgICAgICAgICAgICAgICBjaXR5ICAgICAgICAgICAgICAgeWVhciBcbiAgICAgICAgICAgICAgICAgMCAgICAgICAgICAgICAgICAgIDAgICAgICAgICAgICAgICAgICAwICAgICAgICAgICAgICAgICAgMCAgICAgICAgICAgICAgICAgIDMgXG4gICAgICAgICAgIHZlcnNpb24gcG0xMF9jb25jZW50cmF0aW9uIHBtMjVfY29uY2VudHJhdGlvbiAgbm8yX2NvbmNlbnRyYXRpb24gICAgICAgcG0xMF90ZW1wY292IFxuICAgICAgICAgICAgICAgICAwICAgICAgICAgICAgICAxMTQyNiAgICAgICAgICAgICAgMTgzNjggICAgICAgICAgICAgIDEzMTY0ICAgICAgICAgICAgICAgICAgMCBcbiAgICAgIHBtMjVfdGVtcGNvdiAgICAgICAgbm8yX3RlbXBjb3YgICB0eXBlX29mX3N0YXRpb25zICAgICAgICAgIHJlZmVyZW5jZSAgICAgICAgICAgd2ViX2xpbmsgXG4gICAgICAgICAgICAgICAgIDAgICAgICAgICAgICAgICAgICAwICAgICAgICAgICAgICAgICAgMCAgICAgICAgICAgICAgICAgIDAgICAgICAgICAgICAgICAgICAwIFxuICAgICAgICBwb3B1bGF0aW9uICBwb3B1bGF0aW9uX3NvdXJjZSAgICAgICAgICAgbGF0aXR1ZGUgICAgICAgICAgbG9uZ2l0dWRlICAgICAgICAgICAgIHdob19tcyBcbiAgICAgICAgICAgICAxNzY2NSAgICAgICAgICAgICAgICAgIDAgICAgICAgICAgICAgICAgICAwICAgICAgICAgICAgICAgICAgMCAgICAgICAgICAgICAgICAgIDAgXG4ifQ== -->
-<pre><code>        who_region               iso3       country_name               city               year 
-                 0                  0                  0                  0                  3 
-           version pm10_concentration pm25_concentration  no2_concentration       pm10_tempcov 
-                 0              11426              18368              13164                  0 
-      pm25_tempcov        no2_tempcov   type_of_stations          reference           web_link 
-                 0                  0                  0                  0                  0 
-        population  population_source           latitude          longitude             who_ms 
-             17665                  0                  0                  0                  0 </code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -1864,22 +1832,6 @@ air_data &lt;- air_data %&gt;%
 <pre class="r"><code>str(air_data)</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-output-end -->
-<!-- rnb-output-begin eyJkYXRhIjoidGliYmxlIFs0MCwwOTggw5cgMTNdIChTMzogdGJsX2RmL3RibC9kYXRhLmZyYW1lKVxuICQgd2hvX3JlZ2lvbiAgICAgICAgOiBjaHIgWzE6NDAwOThdIFwiNF9FdXJcIiBcIjRfRXVyXCIgXCI0X0V1clwiIFwiNF9FdXJcIiAuLi5cbiAkIGlzbzMgICAgICAgICAgICAgIDogY2hyIFsxOjQwMDk4XSBcIkVTUFwiIFwiRVNQXCIgXCJFU1BcIiBcIkVTUFwiIC4uLlxuICQgY291bnRyeV9uYW1lICAgICAgOiBjaHIgWzE6NDAwOThdIFwiU3BhaW5cIiBcIlNwYWluXCIgXCJTcGFpblwiIFwiU3BhaW5cIiAuLi5cbiAkIGNpdHkgICAgICAgICAgICAgIDogY2hyIFsxOjQwMDk4XSBcIkEgQ29ydW5hL0VTUFwiIFwiQSBDb3J1bmEvRVNQXCIgXCJBIENvcnVuYS9FU1BcIiBcIkEgQ29ydW5hL0VTUFwiIC4uLlxuICQgeWVhciAgICAgICAgICAgICAgOiBudW0gWzE6NDAwOThdIDIwMTMgMjAxNCAyMDE1IDIwMTYgMjAxNyAuLi5cbiAkIHBtMTBfY29uY2VudHJhdGlvbjogbnVtIFsxOjQwMDk4XSAyMy4yIDI3LjUgMjUuNSAyMy4xIDI2LjggLi4uXG4gJCBwbTI1X2NvbmNlbnRyYXRpb246IG51bSBbMTo0MDA5OF0gMTEuNSAxNS45IDE0IDEzLjIgMTQuMSAuLi5cbiAkIG5vMl9jb25jZW50cmF0aW9uIDogbnVtIFsxOjQwMDk4XSAyOC44IDE5LjYgMjIuNyAyMC4yIDIxLjUgLi4uXG4gJCB0eXBlX29mX3N0YXRpb25zICA6IGNociBbMTo0MDA5OF0gXCJVcmJhbiwgVXJiYW4sIFN1YnVyYmFuXCIgXCJVcmJhbiwgVXJiYW4sIFN1YnVyYmFuXCIgXCJVcmJhbiwgVXJiYW4sIFN1YnVyYmFuLCBTdWJ1cmJhblwiIFwiVXJiYW4sIFVyYmFuLCBTdWJ1cmJhbiwgU3VidXJiYW5cIiAuLi5cbiAkIHBvcHVsYXRpb24gICAgICAgIDogbnVtIFsxOjQwMDk4XSAyNDYxNDYgMjQ3NjA0IDI0NzYwNCAyNDc2MDQgMjQ3NjA0IC4uLlxuICQgbGF0aXR1ZGUgICAgICAgICAgOiBudW0gWzE6NDAwOThdIDQzLjQgNDMuNCA0My40IDQzLjQgNDMuNCAuLi5cbiAkIGxvbmdpdHVkZSAgICAgICAgIDogbnVtIFsxOjQwMDk4XSAtOC40MiAtOC40MiAtOC40MiAtOC40MiAtOC40MiAuLi5cbiAkIHdob19tcyAgICAgICAgICAgIDogbnVtIFsxOjQwMDk4XSAxIDEgMSAxIDEgMSAxIDEgMSAxIC4uLlxuIn0= -->
-<pre><code>tibble [40,098 × 13] (S3: tbl_df/tbl/data.frame)
- $ who_region        : chr [1:40098] &quot;4_Eur&quot; &quot;4_Eur&quot; &quot;4_Eur&quot; &quot;4_Eur&quot; ...
- $ iso3              : chr [1:40098] &quot;ESP&quot; &quot;ESP&quot; &quot;ESP&quot; &quot;ESP&quot; ...
- $ country_name      : chr [1:40098] &quot;Spain&quot; &quot;Spain&quot; &quot;Spain&quot; &quot;Spain&quot; ...
- $ city              : chr [1:40098] &quot;A Coruna/ESP&quot; &quot;A Coruna/ESP&quot; &quot;A Coruna/ESP&quot; &quot;A Coruna/ESP&quot; ...
- $ year              : num [1:40098] 2013 2014 2015 2016 2017 ...
- $ pm10_concentration: num [1:40098] 23.2 27.5 25.5 23.1 26.8 ...
- $ pm25_concentration: num [1:40098] 11.5 15.9 14 13.2 14.1 ...
- $ no2_concentration : num [1:40098] 28.8 19.6 22.7 20.2 21.5 ...
- $ type_of_stations  : chr [1:40098] &quot;Urban, Urban, Suburban&quot; &quot;Urban, Urban, Suburban&quot; &quot;Urban, Urban, Suburban, Suburban&quot; &quot;Urban, Urban, Suburban, Suburban&quot; ...
- $ population        : num [1:40098] 246146 247604 247604 247604 247604 ...
- $ latitude          : num [1:40098] 43.4 43.4 43.4 43.4 43.4 ...
- $ longitude         : num [1:40098] -8.42 -8.42 -8.42 -8.42 -8.42 ...
- $ who_ms            : num [1:40098] 1 1 1 1 1 1 1 1 1 1 ...</code></pre>
-<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
@@ -1888,14 +1840,6 @@ air_data &lt;- air_data %&gt;%
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY29sU3Vtcyhpcy5uYShhaXJfZGF0YSkpXG5gYGAifQ== -->
 <pre class="r"><code>colSums(is.na(air_data))</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiICAgICAgICB3aG9fcmVnaW9uICAgICAgICAgICAgICAgaXNvMyAgICAgICBjb3VudHJ5X25hbWUgICAgICAgICAgICAgICBjaXR5ICAgICAgICAgICAgICAgeWVhciBcbiAgICAgICAgICAgICAgICAgMCAgICAgICAgICAgICAgICAgIDAgICAgICAgICAgICAgICAgICAwICAgICAgICAgICAgICAgICAgMCAgICAgICAgICAgICAgICAgIDMgXG5wbTEwX2NvbmNlbnRyYXRpb24gcG0yNV9jb25jZW50cmF0aW9uICBubzJfY29uY2VudHJhdGlvbiAgIHR5cGVfb2Zfc3RhdGlvbnMgICAgICAgICBwb3B1bGF0aW9uIFxuICAgICAgICAgICAgIDExNDI2ICAgICAgICAgICAgICAxODM2OCAgICAgICAgICAgICAgMTMxNjQgICAgICAgICAgICAgICAgICAwICAgICAgICAgICAgICAxNzY2NSBcbiAgICAgICAgICBsYXRpdHVkZSAgICAgICAgICBsb25naXR1ZGUgICAgICAgICAgICAgd2hvX21zIFxuICAgICAgICAgICAgICAgICAwICAgICAgICAgICAgICAgICAgMCAgICAgICAgICAgICAgICAgIDAgXG4ifQ== -->
-<pre><code>        who_region               iso3       country_name               city               year 
-                 0                  0                  0                  0                  3 
-pm10_concentration pm25_concentration  no2_concentration   type_of_stations         population 
-             11426              18368              13164                  0              17665 
-          latitude          longitude             who_ms 
-                 0                  0                  0 </code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -1922,22 +1866,6 @@ air_data &lt;- air_data %&gt;%
 <pre class="r"><code>str(air_data)</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-output-end -->
-<!-- rnb-output-begin eyJkYXRhIjoidGliYmxlIFs0MCwwOTggw5cgMTNdIChTMzogdGJsX2RmL3RibC9kYXRhLmZyYW1lKVxuICQgd2hvX3JlZ2lvbiAgICAgICAgOiBGYWN0b3Igdy8gNyBsZXZlbHMgXCIxX0FmclwiLFwiMl9BbXJcIiwuLjogNCA0IDQgNCA0IDQgNCA0IDQgNiAuLi5cbiAkIGlzbzMgICAgICAgICAgICAgIDogY2hyIFsxOjQwMDk4XSBcIkVTUFwiIFwiRVNQXCIgXCJFU1BcIiBcIkVTUFwiIC4uLlxuICQgY291bnRyeV9uYW1lICAgICAgOiBGYWN0b3Igdy8gMTI0IGxldmVscyBcIkFmZ2hhbmlzdGFuXCIsLi46IDEwNSAxMDUgMTA1IDEwNSAxMDUgMTA1IDEwNSAxMDUgMTA1IDIzIC4uLlxuICQgY2l0eSAgICAgICAgICAgICAgOiBGYWN0b3Igdy8gNzE4MiBsZXZlbHMgXCJBIENvcnVuYS9FU1BcIiwuLjogMSAxIDEgMSAxIDEgMSAxIDEgMiAuLi5cbiAkIHllYXIgICAgICAgICAgICAgIDogbnVtIFsxOjQwMDk4XSAyMDEzIDIwMTQgMjAxNSAyMDE2IDIwMTcgLi4uXG4gJCBwbTEwX2NvbmNlbnRyYXRpb246IG51bSBbMTo0MDA5OF0gMjMuMiAyNy41IDI1LjUgMjMuMSAyNi44IC4uLlxuICQgcG0yNV9jb25jZW50cmF0aW9uOiBudW0gWzE6NDAwOThdIDExLjUgMTUuOSAxNCAxMy4yIDE0LjEgLi4uXG4gJCBubzJfY29uY2VudHJhdGlvbiA6IG51bSBbMTo0MDA5OF0gMjguOCAxOS42IDIyLjcgMjAuMiAyMS41IC4uLlxuICQgdHlwZV9vZl9zdGF0aW9ucyAgOiBGYWN0b3Igdy8gMzI2IGxldmVscyBcIkJhY2tncm91bmRcIixcIkJhY2tncm91bmQsIEJhY2tncm91bmRcIiwuLjogMjA1IDIwNSAyMDYgMjA2IDIwNiAyMDYgMjA2IDE1MSAxNTEgOCAuLi5cbiAkIHBvcHVsYXRpb24gICAgICAgIDogbnVtIFsxOjQwMDk4XSAyNDYxNDYgMjQ3NjA0IDI0NzYwNCAyNDc2MDQgMjQ3NjA0IC4uLlxuICQgbGF0aXR1ZGUgICAgICAgICAgOiBudW0gWzE6NDAwOThdIDQzLjQgNDMuNCA0My40IDQzLjQgNDMuNCAuLi5cbiAkIGxvbmdpdHVkZSAgICAgICAgIDogbnVtIFsxOjQwMDk4XSAtOC40MiAtOC40MiAtOC40MiAtOC40MiAtOC40MiAuLi5cbiAkIHdob19tcyAgICAgICAgICAgIDogbnVtIFsxOjQwMDk4XSAxIDEgMSAxIDEgMSAxIDEgMSAxIC4uLlxuIn0= -->
-<pre><code>tibble [40,098 × 13] (S3: tbl_df/tbl/data.frame)
- $ who_region        : Factor w/ 7 levels &quot;1_Afr&quot;,&quot;2_Amr&quot;,..: 4 4 4 4 4 4 4 4 4 6 ...
- $ iso3              : chr [1:40098] &quot;ESP&quot; &quot;ESP&quot; &quot;ESP&quot; &quot;ESP&quot; ...
- $ country_name      : Factor w/ 124 levels &quot;Afghanistan&quot;,..: 105 105 105 105 105 105 105 105 105 23 ...
- $ city              : Factor w/ 7182 levels &quot;A Coruna/ESP&quot;,..: 1 1 1 1 1 1 1 1 1 2 ...
- $ year              : num [1:40098] 2013 2014 2015 2016 2017 ...
- $ pm10_concentration: num [1:40098] 23.2 27.5 25.5 23.1 26.8 ...
- $ pm25_concentration: num [1:40098] 11.5 15.9 14 13.2 14.1 ...
- $ no2_concentration : num [1:40098] 28.8 19.6 22.7 20.2 21.5 ...
- $ type_of_stations  : Factor w/ 326 levels &quot;Background&quot;,&quot;Background, Background&quot;,..: 205 205 206 206 206 206 206 151 151 8 ...
- $ population        : num [1:40098] 246146 247604 247604 247604 247604 ...
- $ latitude          : num [1:40098] 43.4 43.4 43.4 43.4 43.4 ...
- $ longitude         : num [1:40098] -8.42 -8.42 -8.42 -8.42 -8.42 ...
- $ who_ms            : num [1:40098] 1 1 1 1 1 1 1 1 1 1 ...</code></pre>
-<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
@@ -1958,13 +1886,14 @@ air_data &lt;- air_data %&gt;%
 <pre class="r"><code>colSums(is.na(air_data))</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-output-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiICAgICAgICB3aG9fcmVnaW9uICAgICAgICAgICAgICAgaXNvMyAgICAgICBjb3VudHJ5X25hbWUgICAgICAgICAgICAgICBjaXR5ICAgICAgICAgICAgICAgeWVhciBcbiAgICAgICAgICAgICAgICAgMCAgICAgICAgICAgICAgICAgIDAgICAgICAgICAgICAgICAgICAwICAgICAgICAgICAgICAgICAgMCAgICAgICAgICAgICAgICAgIDAgXG5wbTEwX2NvbmNlbnRyYXRpb24gcG0yNV9jb25jZW50cmF0aW9uICBubzJfY29uY2VudHJhdGlvbiAgIHR5cGVfb2Zfc3RhdGlvbnMgICAgICAgICBwb3B1bGF0aW9uIFxuICAgICAgICAgICAgICAgICAwICAgICAgICAgICAgICAgICAgMCAgICAgICAgICAgICAgICAgIDAgICAgICAgICAgICAgICAgICAwICAgICAgICAgICAgICAgNDkzNyBcbiAgICAgICAgICBsYXRpdHVkZSAgICAgICAgICBsb25naXR1ZGUgICAgICAgICAgICAgd2hvX21zIFxuICAgICAgICAgICAgICAgICAwICAgICAgICAgICAgICAgICAgMCAgICAgICAgICAgICAgICAgIDAgXG4ifQ== -->
-<pre><code>        who_region               iso3       country_name               city               year 
-                 0                  0                  0                  0                  0 
-pm10_concentration pm25_concentration  no2_concentration   type_of_stations         population 
-                 0                  0                  0                  0               4937 
-          latitude          longitude             who_ms 
-                 0                  0                  0 </code></pre>
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-output-begin eyJkYXRhIjoiXG48IS0tIHJuYi1zb3VyY2UtYmVnaW4gZXlKa1lYUmhJam9pWUdCZ2NseHVjM1Z0S0dSMWNHeHBZMkYwWldRb1lXbHlYMlJoZEdFcEtWeHVZR0JnSW4wPSAtLT5cblxuYGBgclxuc3VtKGR1cGxpY2F0ZWQoYWlyX2RhdGEpKVxuYGBgXG5cbjwhLS0gcm5iLXNvdXJjZS1lbmQgLS0+XG4ifQ== -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc3VtKGR1cGxpY2F0ZWQoYWlyX2RhdGEpKVxuYGBgIn0= -->
+<pre class="r"><code>sum(duplicated(air_data))</code></pre>
+<!-- rnb-source-end -->
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -1978,10 +1907,46 @@ pm10_concentration pm25_concentration  no2_concentration   type_of_stations     
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-output-begin eyJkYXRhIjoiXG48IS0tIHJuYi1zb3VyY2UtYmVnaW4gZXlKa1lYUmhJam9pWUdCZ2NseHVaMnhwYlhCelpTaGhhWEpmWkdGMFlTbGNibUJnWUNKOSAtLT5cblxuYGBgclxuZ2xpbXBzZShhaXJfZGF0YSlcbmBgYFxuXG48IS0tIHJuYi1zb3VyY2UtZW5kIC0tPlxuIn0= -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZ2xpbXBzZShhaXJfZGF0YSlcbmBgYCJ9 -->
+<pre class="r"><code>glimpse(air_data)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-output-begin eyJkYXRhIjoiXG48IS0tIHJuYi1zb3VyY2UtYmVnaW4gZXlKa1lYUmhJam9pWUdCZ2NseHVjM1Z0YldGeWVTaGhhWEpmWkdGMFlTbGNibUJnWUNKOSAtLT5cblxuYGBgclxuc3VtbWFyeShhaXJfZGF0YSlcbmBgYFxuXG48IS0tIHJuYi1zb3VyY2UtZW5kIC0tPlxuIn0= -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc3VtbWFyeShhaXJfZGF0YSlcbmBgYCJ9 -->
+<pre class="r"><code>summary(air_data)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-output-begin eyJkYXRhIjoiXG48IS0tIHJuYi1zb3VyY2UtYmVnaW4gZXlKa1lYUmhJam9pWUdCZ2NseHVjM1Z0YldGeWVTaGhhWEpmWkdGMFlTQWxQaVVnYzJWc1pXTjBLSEJ0TVRCZlkyOXVZMlZ1ZEhKaGRHbHZiaXdnY0cweU5WOWpiMjVqWlc1MGNtRjBhVzl1TENCdWJ6SmZZMjl1WTJWdWRISmhkR2x2YmlrcFhHNWdZR0FpZlE9PSAtLT5cblxuYGBgclxuc3VtbWFyeShhaXJfZGF0YSAlPiUgc2VsZWN0KHBtMTBfY29uY2VudHJhdGlvbiwgcG0yNV9jb25jZW50cmF0aW9uLCBubzJfY29uY2VudHJhdGlvbikpXG5gYGBcblxuPCEtLSBybmItc291cmNlLWVuZCAtLT5cbiJ9 -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc3VtbWFyeShhaXJfZGF0YSAlPiUgc2VsZWN0KHBtMTBfY29uY2VudHJhdGlvbiwgcG0yNV9jb25jZW50cmF0aW9uLCBubzJfY29uY2VudHJhdGlvbikpXG5gYGAifQ== -->
+<pre class="r"><code>summary(air_data %&gt;% select(pm10_concentration, pm25_concentration, no2_concentration))</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiIHBtMTBfY29uY2VudHJhdGlvbiBwbTI1X2NvbmNlbnRyYXRpb24gbm8yX2NvbmNlbnRyYXRpb25cbiBNaW4uICAgOiAgMi4wMCAgICAgTWluLiAgIDogIDEuMDAwICAgIE1pbi4gICA6ICAwLjAwMiAgXG4gMXN0IFF1LjogMTUuOTcgICAgIDFzdCBRdS46ICA4Ljk0NSAgICAxc3QgUXUuOiAxMS4zNjUgIFxuIE1lZGlhbiA6IDIwLjU3ICAgICBNZWRpYW4gOiAxMi4xMzMgICAgTWVkaWFuIDogMTguNjY5ICBcbiBNZWFuICAgOiAyNi40MSAgICAgTWVhbiAgIDogMTUuNDA2ICAgIE1lYW4gICA6IDIwLjEyNiAgXG4gM3JkIFF1LjogMjcuNTQgICAgIDNyZCBRdS46IDE3LjI0MyAgICAzcmQgUXUuOiAyNi45NTkgIFxuIE1heC4gICA6MzA3LjAwICAgICBNYXguICAgOjIxNi42MjAgICAgTWF4LiAgIDoxMjkuNjM1ICBcbiJ9 -->
+<pre><code> pm10_concentration pm25_concentration no2_concentration
+ Min.   :  2.00     Min.   :  1.000    Min.   :  0.002  
+ 1st Qu.: 15.97     1st Qu.:  8.945    1st Qu.: 11.365  
+ Median : 20.57     Median : 12.133    Median : 18.669  
+ Mean   : 26.41     Mean   : 15.406    Mean   : 20.126  
+ 3rd Qu.: 27.54     3rd Qu.: 17.243    3rd Qu.: 26.959  
+ Max.   :307.00     Max.   :216.620    Max.   :129.635  </code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
 </div>
 </div>
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIlIgTm90ZWJvb2siDQpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sNCi0tLQ0KDQpUaGlzIGlzIGFuIFtSIE1hcmtkb3duXShodHRwOi8vcm1hcmtkb3duLnJzdHVkaW8uY29tKSBOb3RlYm9vay4gV2hlbiB5b3UgZXhlY3V0ZSBjb2RlIHdpdGhpbiB0aGUgbm90ZWJvb2ssIHRoZSByZXN1bHRzIGFwcGVhciBiZW5lYXRoIHRoZSBjb2RlLiANCg0KDQojIERTMjAyLjMg4oCTIERhdGEgUHJvZ3JhbW1pbmcgd2l0aCBSDQojIyBDb3Vyc2V3b3JrIOKAkyBTY2VuYXJpbyBDOiBDb3JyZWxhdGlvbmFsIEFuYWx5c3QNCg0KVGhpcyBSIE5vdGVib29rIGNvbnRhaW5zIHRoZSBkYXRhIHByZXBhcmF0aW9uLCBhbmFseXNpcywgYW5kIHZpc3VhbGl6YXRpb25zIGZvciBDb3JyZWxhdGlvbmFsIEFuYWx5c3QgLiAgDQpUaGUgZm9jdXMgaXMgb24gZXhwbG9yaW5nIHJlbGF0aW9uc2hpcHMgYmV0d2VlbiBkaWZmZXJlbnQgYWlyIHBvbGx1dGFudHMgYW5kIHRlc3Rpbmcgd2hldGhlciBvbmUgcG9sbHV0YW50IGNhbiByZWxpYWJseSBwcmVkaWN0IGFub3RoZXIuDQoNCg0KDQpgYGB7cn0NCmluc3RhbGwucGFja2FnZXMoIkdHYWxseSIpDQppbnN0YWxsLnBhY2thZ2VzKCJjb3JycGxvdCIpDQpgYGANCg0KDQoNCmBgYHtyfQ0KIyBMb2FkIGFsbCByZXF1aXJlZCBsaWJyYXJpZXMNCmxpYnJhcnkodGlkeXZlcnNlKSAgIyBGb3IgZGF0YSBtYW5pcHVsYXRpb24gYW5kIHZpc3VhbGl6YXRpb24NCmxpYnJhcnkoY29ycnBsb3QpICAgIyBGb3IgY29ycmVsYXRpb24gbWF0cmljZXMNCmxpYnJhcnkoR0dhbGx5KSAgICAgIyBGb3IgY29ycmVsYXRpb24gcGxvdHMgbGlrZSBnZ3BhaXJzDQpsaWJyYXJ5KHJlYWR4bCkgICAgICMgcmVhZCBleGNlbCBmaWxlcw0KYGBgDQoNCg0KDQpgYGB7cn0NCmFpcl9kYXRhIDwtIHJlYWRfZXhjZWwoIndob19hbWJpZW50X2Fpcl9xdWFsaXR5X2RhdGFiYXNlX3ZlcnNpb25fMjAyNF8odjYuMSkueGxzeCIsIHNoZWV0ID0gIlVwZGF0ZSAyMDI0IChWNi4xKSAoMikiKQ0KYGBgDQoNCg0KDQoNCmBgYHtyfQ0Kc3RyKGFpcl9kYXRhKQ0KYGBgDQoNCg0KDQoNCmBgYHtyfQ0KY29sU3Vtcyhpcy5uYShhaXJfZGF0YSkpDQpgYGANCg0KDQoNCg0KYGBge3J9DQojRHJvcCB0aGUgY29sdW1ucw0KYWlyX2RhdGEgPC0gYWlyX2RhdGEgJT4lDQogIHNlbGVjdCgtcG0xMF90ZW1wY292LCAtcG0yNV90ZW1wY292LCAtbm8yX3RlbXBjb3YsIC13ZWJfbGluaywgLXJlZmVyZW5jZSwgLXZlcnNpb24sIC1wb3B1bGF0aW9uX3NvdXJjZSkNCmBgYA0KDQoNCg0KDQpgYGB7cn0NCnN0cihhaXJfZGF0YSkNCmBgYA0KDQoNCg0KYGBge3J9DQpjb2xTdW1zKGlzLm5hKGFpcl9kYXRhKSkNCmBgYA0KDQoNCg0KDQpgYGB7cn0NCiNDb252ZXJ0aW5nIHRoZSBkYXRhIHR5cGUNCmFpcl9kYXRhIDwtIGFpcl9kYXRhICU+JQ0KICBtdXRhdGUoDQogICAgd2hvX3JlZ2lvbiA9IGFzLmZhY3Rvcih3aG9fcmVnaW9uKSwNCiAgICBjb3VudHJ5X25hbWUgPSBhcy5mYWN0b3IoY291bnRyeV9uYW1lKSwNCiAgICBjaXR5ID0gYXMuZmFjdG9yKGNpdHkpLA0KICAgIHR5cGVfb2Zfc3RhdGlvbnMgPSBhcy5mYWN0b3IodHlwZV9vZl9zdGF0aW9ucykNCiAgKQ0KYGBgDQoNCg0KDQoNCg0KYGBge3J9DQpzdHIoYWlyX2RhdGEpDQpgYGANCg0KDQpgYGB7cn0NCiNEcm9wIHJvd3Mgd2l0aCBtaXNzaW5nIHBvbGx1dGFudCB2YWx1ZXMNCmFpcl9kYXRhIDwtIGFpcl9kYXRhICU+JQ0KICBkcm9wX25hKHBtMTBfY29uY2VudHJhdGlvbiwgcG0yNV9jb25jZW50cmF0aW9uLCBubzJfY29uY2VudHJhdGlvbikNCmBgYA0KDQoNCg0KYGBge3J9DQpjb2xTdW1zKGlzLm5hKGFpcl9kYXRhKSkNCmBgYA0KDQoNCmBgYHtyfQ0KdmlldyhhaXJfZGF0YSkNCmBgYA0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQo=</div>
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIlIgTm90ZWJvb2siDQpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sNCi0tLQ0KDQpUaGlzIGlzIGFuIFtSIE1hcmtkb3duXShodHRwOi8vcm1hcmtkb3duLnJzdHVkaW8uY29tKSBOb3RlYm9vay4gV2hlbiB5b3UgZXhlY3V0ZSBjb2RlIHdpdGhpbiB0aGUgbm90ZWJvb2ssIHRoZSByZXN1bHRzIGFwcGVhciBiZW5lYXRoIHRoZSBjb2RlLiANCg0KDQojIERTMjAyLjMg4oCTIERhdGEgUHJvZ3JhbW1pbmcgd2l0aCBSDQojIyBDb3Vyc2V3b3JrIOKAkyBTY2VuYXJpbyBDOiBDb3JyZWxhdGlvbmFsIEFuYWx5c3QNCg0KVGhpcyBSIE5vdGVib29rIGNvbnRhaW5zIHRoZSBkYXRhIHByZXBhcmF0aW9uLCBhbmFseXNpcywgYW5kIHZpc3VhbGl6YXRpb25zIGZvciBDb3JyZWxhdGlvbmFsIEFuYWx5c3QgLiAgDQpUaGUgZm9jdXMgaXMgb24gZXhwbG9yaW5nIHJlbGF0aW9uc2hpcHMgYmV0d2VlbiBkaWZmZXJlbnQgYWlyIHBvbGx1dGFudHMgYW5kIHRlc3Rpbmcgd2hldGhlciBvbmUgcG9sbHV0YW50IGNhbiByZWxpYWJseSBwcmVkaWN0IGFub3RoZXIuDQoNCg0KU3RhZ2UgMS4gRGF0YSBQcmVwYXJhdGlvbg0KYGBge3J9DQppbnN0YWxsLnBhY2thZ2VzKCJHR2FsbHkiKQ0KaW5zdGFsbC5wYWNrYWdlcygiY29ycnBsb3QiKQ0KYGBgDQoNCg0KDQpgYGB7cn0NCiMgTG9hZCBhbGwgcmVxdWlyZWQgbGlicmFyaWVzDQpsaWJyYXJ5KHRpZHl2ZXJzZSkgICMgRm9yIGRhdGEgbWFuaXB1bGF0aW9uIGFuZCB2aXN1YWxpemF0aW9uDQpsaWJyYXJ5KGNvcnJwbG90KSAgICMgRm9yIGNvcnJlbGF0aW9uIG1hdHJpY2VzDQpsaWJyYXJ5KEdHYWxseSkgICAgICMgRm9yIGNvcnJlbGF0aW9uIHBsb3RzIGxpa2UgZ2dwYWlycw0KbGlicmFyeShyZWFkeGwpICAgICAjIHJlYWQgZXhjZWwgZmlsZXMNCmBgYA0KDQoNCg0KYGBge3J9DQphaXJfZGF0YSA8LSByZWFkX2V4Y2VsKCJ3aG9fYW1iaWVudF9haXJfcXVhbGl0eV9kYXRhYmFzZV92ZXJzaW9uXzIwMjRfKHY2LjEpLnhsc3giLCBzaGVldCA9ICJVcGRhdGUgMjAyNCAoVjYuMSkgKDIpIikNCmBgYA0KDQoNCg0KDQpgYGB7cn0NCnN0cihhaXJfZGF0YSkNCmBgYA0KDQoNCg0KDQpgYGB7cn0NCmNvbFN1bXMoaXMubmEoYWlyX2RhdGEpKQ0KYGBgDQoNCg0KDQoNCmBgYHtyfQ0KI0Ryb3AgdGhlIGNvbHVtbnMNCmFpcl9kYXRhIDwtIGFpcl9kYXRhICU+JQ0KICBzZWxlY3QoLXBtMTBfdGVtcGNvdiwgLXBtMjVfdGVtcGNvdiwgLW5vMl90ZW1wY292LCAtd2ViX2xpbmssIC1yZWZlcmVuY2UsIC12ZXJzaW9uLCAtcG9wdWxhdGlvbl9zb3VyY2UpDQpgYGANCg0KDQoNCg0KYGBge3J9DQpzdHIoYWlyX2RhdGEpDQpgYGANCg0KDQoNCmBgYHtyfQ0KY29sU3Vtcyhpcy5uYShhaXJfZGF0YSkpDQpgYGANCg0KDQoNCg0KYGBge3J9DQojQ29udmVydGluZyB0aGUgZGF0YSB0eXBlDQphaXJfZGF0YSA8LSBhaXJfZGF0YSAlPiUNCiAgbXV0YXRlKA0KICAgIHdob19yZWdpb24gPSBhcy5mYWN0b3Iod2hvX3JlZ2lvbiksDQogICAgY291bnRyeV9uYW1lID0gYXMuZmFjdG9yKGNvdW50cnlfbmFtZSksDQogICAgY2l0eSA9IGFzLmZhY3RvcihjaXR5KSwNCiAgICB0eXBlX29mX3N0YXRpb25zID0gYXMuZmFjdG9yKHR5cGVfb2Zfc3RhdGlvbnMpDQogICkNCmBgYA0KDQoNCg0KDQoNCmBgYHtyfQ0Kc3RyKGFpcl9kYXRhKQ0KYGBgDQoNCg0KYGBge3J9DQojRHJvcCByb3dzIHdpdGggbWlzc2luZyBwb2xsdXRhbnQgdmFsdWVzDQphaXJfZGF0YSA8LSBhaXJfZGF0YSAlPiUNCiAgZHJvcF9uYShwbTEwX2NvbmNlbnRyYXRpb24sIHBtMjVfY29uY2VudHJhdGlvbiwgbm8yX2NvbmNlbnRyYXRpb24pDQpgYGANCg0KDQoNCmBgYHtyfQ0KY29sU3Vtcyhpcy5uYShhaXJfZGF0YSkpDQpgYGANCg0KYGBge3J9DQpzdW0oZHVwbGljYXRlZChhaXJfZGF0YSkpDQpgYGANCg0KDQpgYGB7cn0NCnZpZXcoYWlyX2RhdGEpDQpgYGANCg0KDQoNCmBgYHtyfQ0KZ2xpbXBzZShhaXJfZGF0YSkNCmBgYA0KDQoNCg0KYGBge3J9DQpzdW1tYXJ5KGFpcl9kYXRhKQ0KYGBgDQoNCg0KDQpgYGB7cn0NCiMgU3VtbWFyeSBzdGF0aXN0aWNzIGZvciBrZXkgcG9sbHV0YW50cw0KDQpzdW1tYXJ5KGFpcl9kYXRhICU+JSANCiAgICAgICAgICBzZWxlY3QocG0xMF9jb25jZW50cmF0aW9uLCBwbTI1X2NvbmNlbnRyYXRpb24sIG5vMl9jb25jZW50cmF0aW9uKSkNCmBgYA0KDQoNCg0KDQoNCg0KDQoNCg0K</div>
 
 
 
