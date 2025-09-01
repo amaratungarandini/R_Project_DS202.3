@@ -13,7 +13,7 @@ This R Notebook contains the data preparation, analysis, and visualizations for 
 The focus is on exploring relationships between different air pollutants and testing whether one pollutant can reliably predict another.
 
 
-
+Stage 1. Data Preparation
 ```{r}
 install.packages("GGally")
 install.packages("corrplot")
@@ -106,6 +106,10 @@ air_data <- air_data %>%
 colSums(is.na(air_data))
 ```
 
+```{r}
+sum(duplicated(air_data))
+```
+
 
 ```{r}
 view(air_data)
@@ -113,16 +117,24 @@ view(air_data)
 
 
 
+```{r}
+glimpse(air_data)
+```
 
 
 
+```{r}
+summary(air_data)
+```
 
 
 
+```{r}
+# Summary statistics for key pollutants
 
-
-
-
+summary(air_data %>% 
+          select(pm10_concentration, pm25_concentration, no2_concentration))
+```
 
 
 
