@@ -56,12 +56,19 @@ colSums(is.na(air_data))
 ```
 
 ```{r}
+#Drop rows with missing pollutant values
+data_clean <- air_data %>%
+  drop_na(pm10_concentration, pm25_concentration, no2_concentration)
+```
 
+```{r}
+colSums(is.na(data_clean))
 ```
 
 
+```{r}
 
-
+```
 
 
 
