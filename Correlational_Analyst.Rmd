@@ -87,9 +87,21 @@ str(data_clean)
 ```
 
 
+```{r}
+data_clean <- data_clean %>%
+  mutate(
+    pm10_concentration = as.numeric(pm10_concentration),
+    pm25_concentration = as.numeric(pm25_concentration),
+    no2_concentration  = as.numeric(no2_concentration),
+    population         = as.numeric(population)
+  )
+```
 
 
 
+```{r}
+str(data_clean)
+```
 
 
 
