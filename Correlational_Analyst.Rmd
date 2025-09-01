@@ -20,6 +20,7 @@ install.packages("corrplot")
 ```
 
 
+
 ```{r}
 # Load all required libraries
 library(tidyverse)  # For data manipulation and visualization
@@ -29,14 +30,64 @@ library(readxl)     # read excel files
 ```
 
 
+
 ```{r}
 air_data <- read_excel("who_ambient_air_quality_database_version_2024_(v6.1).xlsx", sheet = "Update 2024 (V6.1) (2)")
 ```
 
 
+
+
 ```{r}
-view(air_data)
+str(air_data)
 ```
+
+
+
+
+```{r}
+colSums(is.na(air_data))
+```
+
+
+
+
+```{r}
+#Drop the columns
+air_data <- air_data %>%
+  select(-pm10_tempcov, -pm25_tempcov, -no2_tempcov, -web_link, -reference, -version, -population_source)
+```
+
+
+
+
+```{r}
+str(air_data)
+```
+
+
+
+```{r}
+colSums(is.na(air_data))
+```
+
+
+
+
+```{r}
+#Converting the data type
+air_data <- air_data %>%
+  mutate(
+    who_region = as.factor(who_region),
+    country_name = as.factor(country_name),
+    city = as.factor(city),
+    type_of_stations = as.factor(type_of_stations)
+  )
+```
+
+
+
+
 
 ```{r}
 str(air_data)
@@ -44,64 +95,24 @@ str(air_data)
 
 
 ```{r}
-colSums(is.na(air_data))
-```
-```{r}
-# replace "NA" strings with real NA in the entire dataset
-air_data[air_data == "NA"] <- NA   
-```
-
-```{r}
-colSums(is.na(air_data))
-```
-
-```{r}
 #Drop rows with missing pollutant values
-data_clean <- air_data %>%
+air_data <- air_data %>%
   drop_na(pm10_concentration, pm25_concentration, no2_concentration)
 ```
 
+
+
 ```{r}
-colSums(is.na(data_clean))
+colSums(is.na(air_data))
 ```
 
 
 ```{r}
-# Drop the three tempcov columns
-#select() chooses columns.The - tells R to exclude the column
-data_clean <- data_clean %>%
-  select(-pm10_tempcov, -pm25_tempcov, -no2_tempcov)
-```
-
-
-```{r}
-#drop two columns
-data_clean <- data_clean %>%
-  select(-web_link, -reference, -version, -population_source)
+view(air_data)
 ```
 
 
 
-```{r}
-str(data_clean)
-```
-
-
-```{r}
-data_clean <- data_clean %>%
-  mutate(
-    pm10_concentration = as.numeric(pm10_concentration),
-    pm25_concentration = as.numeric(pm25_concentration),
-    no2_concentration  = as.numeric(no2_concentration),
-    population         = as.numeric(population)
-  )
-```
-
-
-
-```{r}
-str(data_clean)
-```
 
 
 
