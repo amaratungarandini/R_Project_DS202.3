@@ -67,8 +67,43 @@ colSums(is.na(data_clean))
 
 
 ```{r}
-
+# Drop the three tempcov columns
+#select() chooses columns.The - tells R to exclude the column
+data_clean <- data_clean %>%
+  select(-pm10_tempcov, -pm25_tempcov, -no2_tempcov)
 ```
+
+
+```{r}
+#drop two columns
+data_clean <- data_clean %>%
+  select(-web_link, -reference, -version, -population_source)
+```
+
+
+
+```{r}
+str(data_clean)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
