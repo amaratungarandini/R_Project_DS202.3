@@ -1,42 +1,36 @@
 ---
-title: "R Notebook"
-output: html_notebook
+title: "Correlation Analysis of Air Pollutants"
+author: "Randini Amarathunga"
+date: "2025-08-31"
+output: html_document
 ---
 
-This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
-
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code.
 
 # DS202.3 – Data Programming with R
-## Coursework – Scenario C: Correlational Analyst
 
-This R Notebook contains the data preparation, analysis, and visualizations for Correlational Analyst .  
-The focus is on exploring relationships between different air pollutants and testing whether one pollutant can reliably predict another.
+## Correlational Analyst
 
+This R Notebook contains the data preparation, Exploratory data analysis and visualizations for Correlational Analyst.In this analysis,I focus on exploring relationships between different air pollutants and testing whether one pollutant can reliably predict another using the WHO Ambient Air Quality dataset (2024).
 
-Stage 1. Data Preparation
+### 1.Data Preparation
+
 ```{r}
 install.packages("GGally")
 install.packages("corrplot")
 ```
 
-
-
 ```{r}
-# Load all required libraries
-library(tidyverse)  # For data manipulation and visualization
-library(corrplot)   # For correlation matrices
-library(GGally)     # For correlation plots like ggpairs
+library(tidyverse)  # data manipulation and visualization
+library(corrplot)   # correlation matrices
+library(GGally)     # correlation plots
 library(readxl)     # read excel files
 ```
 
-
-
 ```{r}
+# load the dataset
 air_data <- read_excel("who_ambient_air_quality_database_version_2024_(v6.1).xlsx", sheet = "Update 2024 (V6.1) (2)")
 ```
-
-
-
 
 ```{r}
 str(air_data)
@@ -44,23 +38,21 @@ str(air_data)
 
 
 
-
 ```{r}
+# Getting count of null values in dataset
+
 colSums(is.na(air_data))
 ```
 
 
 
-
 ```{r}
-#Drop the columns
+# Drop the columns which are not required for analysis part
+
 air_data <- air_data %>%
   select(-pm10_tempcov, -pm25_tempcov, -no2_tempcov, -web_link, -reference, -version, -population_source)
 ```
 
-
-
-
 ```{r}
 str(air_data)
 ```
@@ -68,14 +60,16 @@ str(air_data)
 
 
 ```{r}
+# Confirm if there any null values still there
+
 colSums(is.na(air_data))
 ```
 
 
 
-
 ```{r}
-#Converting the data type
+# converting data type to factor
+
 air_data <- air_data %>%
   mutate(
     who_region = as.factor(who_region),
@@ -87,145 +81,31 @@ air_data <- air_data %>%
 
 
 
-
-
 ```{r}
 str(air_data)
 ```
 
 
+
 ```{r}
-#Drop rows with missing pollutant values
+# Drop rows with missing values in pollutant variables
+
 air_data <- air_data %>%
   drop_na(pm10_concentration, pm25_concentration, no2_concentration)
 ```
-
 
 
 ```{r}
 colSums(is.na(air_data))
 ```
 
+
+
 ```{r}
+# Check if there any duplicated values in dataset
+
 sum(duplicated(air_data))
 ```
-
-
-```{r}
-view(air_data)
-```
-
-
-Stage 2. Exploratory Data Analysis (EDA)
-```{r}
-glimpse(air_data)
-```
-
-
-
-```{r}
-summary(air_data)
-```
-
-
-
-```{r}
-# Summary statistics for key pollutants(understand the basic range, center, and spread of pollutants.)
-
-summary(air_data %>% 
-          select(pm10_concentration, pm25_concentration, no2_concentration))
-```
-
-```{r}
-# Create a scatter plot to visualize the relationship between PM2.5 and PM10 concentrations.(EDA)
-# Blue points represent individual observations, while the red line shows the linear regression fit.
-# This helps assess whether PM2.5 can be used to predict PM10 levels.
-
-ggplot(air_data, aes(x = pm25_concentration, y = pm10_concentration)) +
-  geom_point(color = "blue") +
-  geom_smooth(method = "lm", color = "red") +
-  labs(title = "PM2.5 vs PM10", x = "PM2.5", y = "PM10")
-```
-
-
-```{r}
-#Allows display multiple plots together
-library(patchwork)
-
-# Create individual plots(for see the shape, skewness, and outliers)
-p1 <- ggplot(air_data, mapping = aes(x = pm25_concentration)) +
-  geom_histogram(binwidth = 40, fill = "steelblue", color = "black") +
-  labs(title = "Distribution of PM25")
-
-p2 <- ggplot(air_data, mapping = aes(x = pm10_concentration)) +
-  geom_histogram(binwidth = 40, fill = "steelblue", color = "black") +
-  labs(title = "Distribution of PM10")
-
-p3 <- ggplot(air_data, mapping = aes(x = no2_concentration)) +
-  geom_histogram(binwidth = 30, fill = "steelblue", color = "black") +
-  labs(title = "Distribution of NO2")
-
-# Combine plots in one output
-p1 | p2 | p3   # stacks vertically
-
-```
-
-
-
-```{r}
-# Boxplots for all pollutants
-
-air_data %>%
-  pivot_longer(cols = c(pm10_concentration, pm25_concentration, no2_concentration),
-               names_to = "pollutant", values_to = "value") %>%
-  ggplot(aes(x = pollutant, y = value, fill = pollutant)) +
-  geom_boxplot()
-
-
-```
-
-
-
-```{r}
-#visually check correlations before formal correlation analysis.
-#GGally::ggpairs() for pollutant scatterplot matrix.
-
-ggpairs(air_data %>% select(pm10_concentration, pm25_concentration, no2_concentration))
-```
-
-
-```{r}
-# Check top 10 PM2.5 values
-#detect extreme values that may distort correlations.
-air_data %>% arrange(desc(pm25_concentration))
-```
-
-
-
-```{r}
-air_data %>% arrange(desc(no2_concentration))
-```
-
-
-
-```{r}
-air_data %>% arrange(desc(pm10_concentration))
-```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
