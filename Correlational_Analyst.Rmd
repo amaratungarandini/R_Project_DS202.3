@@ -16,6 +16,8 @@ This R Notebook contains the data preparation, Exploratory data analysis and vis
 ### 1.Data Preparation
 
 ```{r}
+# download the essential packages
+
 install.packages("GGally")
 install.packages("corrplot")
 ```
@@ -29,10 +31,13 @@ library(readxl)     # read excel files
 
 ```{r}
 # load the dataset
+
 air_data <- read_excel("who_ambient_air_quality_database_version_2024_(v6.1).xlsx", sheet = "Update 2024 (V6.1) (2)")
 ```
 
 ```{r}
+# Check structure of dataset
+
 str(air_data)
 ```
 
@@ -47,7 +52,7 @@ colSums(is.na(air_data))
 
 
 ```{r}
-# Drop the columns which are not required for analysis part
+# Drop the unnecessary columns
 
 air_data <- air_data %>%
   select(-pm10_tempcov, -pm25_tempcov, -no2_tempcov, -web_link, -reference, -version, -population_source)
@@ -85,6 +90,17 @@ air_data <- air_data %>%
 str(air_data)
 ```
 
+```{r}
+# convert the data type of key pollutant to numeric
+
+air_data <- air_data %>%
+  mutate(
+    pm10_concentration = as.numeric(pm10_concentration),
+    pm25_concentration = as.numeric(pm25_concentration),
+    no2_concentration  = as.numeric(no2_concentration)
+  )
+```
+
 
 
 ```{r}
@@ -106,6 +122,38 @@ colSums(is.na(air_data))
 
 sum(duplicated(air_data))
 ```
+
+
+
+
+
+
+###2. Exploratory Data Analysis (EDA) 
+
+```{r}
+# Summary statistics for key pollutants
+
+summary(air_data %>% 
+          select(pm10_concentration, pm25_concentration, no2_concentration))
+```
+
+
+
+```{r}
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
