@@ -140,12 +140,35 @@ summary(air_data %>%
 
 
 ```{r}
+# checking distribution of each pollutant
 
+ggplot(air_data, aes(x = pm25_concentration)) +
+  geom_histogram(bins = 30, fill = "#90EE90", color = "black") +
+  labs(title = "Distribution of PM2.5", x = "PM2.5", y = "Frequency")
+
+ggplot(air_data, aes(x = pm10_concentration)) +
+  geom_histogram(bins = 30, fill = "#FFB6C1", color = "black") +
+  labs(title = "Distribution of PM10", x = "PM10", y = "Frequency")
+
+ggplot(air_data, aes(x = no2_concentration)) +
+  geom_histogram(bins = 30, fill = "#ADD8E6", color = "black") +
+  labs(title = "Distribution of NO2", x = "NO2", y = "Frequency")
 ```
 
 
 
 
+```{r}
+# Boxplot for identifying outliers
+
+air_data %>%
+  pivot_longer(cols = c(pm25_concentration, pm10_concentration, no2_concentration),
+               names_to = "pollutant", values_to = "value") %>%
+  ggplot(aes(x = pollutant, y = value, fill = pollutant)) +
+  geom_boxplot() +
+  labs(title = "Boxplots of PM2.5, PM10, and NO2",
+       x = "Pollutant", y = "Concentration")
+```
 
 
 
