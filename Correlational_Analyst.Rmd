@@ -171,6 +171,15 @@ air_data %>%
 ```
 
 
+```{r}
+# Visualize relationships between two pollutants
+
+ggplot(air_data, aes(x = pm25_concentration, y = pm10_concentration)) +
+  geom_point(color = "blue", alpha = 0.6) +
+  labs(title = "Scatterplot of PM2.5 vs PM10",
+       x = "PM2.5 concentration",
+       y = "PM10 concentration")
+```
 
 
 
