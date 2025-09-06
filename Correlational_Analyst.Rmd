@@ -185,6 +185,32 @@ ggplot(air_data, aes(x = pm25_concentration, y = pm10_concentration)) +
 
 
 
+```{r}
+# calculate the average pollutant concentrations by WHO region (understanding the regional differences in air quality level)
+
+air_data %>%
+  group_by(who_region) %>%
+  summarise(
+    avg_pm25 = mean(pm25_concentration, na.rm = TRUE),
+    avg_pm10 = mean(pm10_concentration, na.rm = TRUE),
+    avg_no2  = mean(no2_concentration, na.rm = TRUE)
+  )
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
