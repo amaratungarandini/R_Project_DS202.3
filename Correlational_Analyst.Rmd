@@ -214,10 +214,24 @@ ggplot(air_data, aes(x = pm10_concentration, fill = who_region)) +
 ```
 
 
+```{r}
+# scatterplot for identify the relationship between PM2.5, PM10 across different regions & check if the patterns are consistent or region-specific.
+
+ggplot(air_data, aes(x = pm25_concentration, y = pm10_concentration)) +
+  geom_point(alpha = 0.5, color = "blue") +
+  facet_wrap(~who_region) +
+  labs(title = "PM2.5 vs PM10 by WHO Region",
+       x = "PM2.5 concentration", 
+       y = "PM10 concentration")
+
+```
 
 
 
 
+```{r}
+
+```
 
 
 
