@@ -201,7 +201,17 @@ air_data %>%
 
 
 
+```{r}
+# distribution of key pollutants across different WHO regions (smooth view of distribution)
 
+ggplot(air_data, aes(x = pm25_concentration, fill = who_region)) +
+  geom_density(alpha = 0.5) +
+  labs(title = "PM2.5 Density by WHO Region")
+
+ggplot(air_data, aes(x = pm10_concentration, fill = who_region)) +
+  geom_density(alpha = 0.5) +
+  labs(title = "PM10 Density by WHO Region")
+```
 
 
 
